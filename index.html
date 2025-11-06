@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Store Apps Free - Criador de Bot de Ticket</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      height: 100vh;
+      overflow: hidden;
+      color: white;
+      background: radial-gradient(circle at 20% 20%, #0a0f25, #05060a);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    canvas#bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 0;
+    }
+
+    header {
+      position: absolute;
+      top: 20px;
+      width: 100%;
+      text-align: center;
+      z-index: 2;
+    }
+
+    header h1 {
+      font-size: 2rem;
+      color: #00a2ff;
+      letter-spacing: 1px;
+      text-shadow: 0 0 20px rgba(0, 162, 255, 0.8);
+    }
+
+    main {
+      text-align: center;
+      z-index: 2;
+      position: relative;
+    }
+
+    main h2 {
+      font-size: 2.3rem;
+      color: #00a2ff;
+      margin-bottom: 15px;
+      text-shadow: 0 0 20px rgba(0, 162, 255, 0.8);
+    }
+
+    main p {
+      max-width: 600px;
+      margin: 0 auto 30px auto;
+      color: #ccc;
+      font-size: 1.1rem;
+      line-height: 1.5;
+    }
+
+    .btn-discord {
+      background: #5865f2;
+      color: white;
+      text-decoration: none;
+      padding: 15px 35px;
+      border-radius: 12px;
+      font-weight: 600;
+      transition: 0.3s;
+      box-shadow: 0 0 25px rgba(88, 101, 242, 0.5);
+      display: inline-block;
+      transform: translateY(0);
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .btn-discord:hover {
+      background: #4752c4;
+      transform: scale(1.05);
+      box-shadow: 0 0 40px rgba(88, 101, 242, 0.8);
+    }
+
+    footer {
+      position: absolute;
+      bottom: 20px;
+      width: 100%;
+      text-align: center;
+      color: #888;
+      font-size: 0.9rem;
+      z-index: 2;
+    }
+
+    footer a {
+      color: #00a2ff;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="bg"></canvas>
+
+  <header>
+    <h1>Store Apps Free</h1>
+  </header>
+
+  <main>
+    <h2>Crie seu próprio bot de ticket</h2>
+    <p>
+      Com o <strong>Store Apps Free</strong>, você pode gerar e configurar
+      seu bot de tickets no Discord em poucos segundos. Rápido, automático e gratuito.
+    </p>
+    <a href="http://localhost:5000/auth" class="btn-discord">🚀 Criar bot de ticket</a>
+  </main>
+
+  <footer>
+    © 2025 Store Apps Free — Feito com 💙 para a comunidade Discord
+  </footer>
+
+  <script>
+    // --- Fundo animado com partículas ---
+    const canvas = document.getElementById("bg");
+    const ctx = canvas.getContext("2d");
+
+    let particles = [];
+    const numParticles = 100;
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+
+    window.addEventListener("resize", resizeCanvas);
+    resizeCanvas();
+
+    class Particle {
+      constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 3;
+        this.speedX = (Math.random() - 0.5) * 1.2;
+        this.speedY = (Math.random() - 0.5) * 1.2;
+        this.color = "rgba(0,162,255,0.7)";
+      }
+
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+
+        if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+        if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+      }
+
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fillStyle = this.color;
+        ctx.fill();
+      }
+    }
+
+    function init() {
+      particles = [];
+      for (let i = 0; i < numParticles; i++) {
+        particles.push(new Particle());
+      }
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach((p) => {
+        p.update();
+        p.draw();
+      });
+      connectParticles();
+      requestAnimationFrame(animate);
+    }
+
+    function connectParticles() {
+      let opacityValue = 1;
+      for (let a = 0; a < particles.length; a++) {
+        for (let b = a; b < particles.length; b++) {
+          let dx = particles[a].x - particles[b].x;
+          let dy = particles[a].y - particles[b].y;
+          let distance = Math.sqrt(dx * dx + dy * dy);
+          if (distance < 100) {
+            opacityValue = 1 - distance / 100;
+            ctx.strokeStyle = "rgba(0,162,255," + opacityValue + ")";
+            ctx.lineWidth = 0.5;
+            ctx.beginPath();
+            ctx.moveTo(particles[a].x, particles[a].y);
+            ctx.lineTo(particles[b].x, particles[b].y);
+            ctx.stroke();
+          }
+        }
+      }
+    }
+
+    init();
+    animate();
+  </script>
+</body>
+</html>

@@ -11,7 +11,7 @@ app.secret_key = "storeapps_secret_key"
 # ------------------ CONFIG DISCORD ------------------
 DISCORD_CLIENT_ID = "1435836194456862770"
 DISCORD_CLIENT_SECRET = "dz-yYXWFbm8Rb6bizEekYLgvAb6Jj2EC"
-DISCORD_REDIRECT_URI = "http://localhost:5000/callback"
+DISCORD_REDIRECT_URI = "https://store-apps-free.onrender.com/callback"
 DISCORD_API_BASE_URL = "https://discord.com/api"
 OAUTH_SCOPE = "identify email guilds bot applications.commands"
 
